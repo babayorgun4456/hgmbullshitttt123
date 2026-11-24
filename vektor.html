@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>HGM vektör harita (MapLibre)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="maplibre/maplibre-gl.css">
+<script src="maplibre/maplibre-gl.js"></script>
+<style>
+  html, body { margin: 0; height: 100%; font: 14px/1.4 system-ui, "Segoe UI", sans-serif; }
+  #harita { position: absolute; inset: 0; }
+  #panel { position: absolute; top: 10px; left: 10px; z-index: 2; width: 250px; max-height: calc(100% - 40px);
+           overflow: auto; background: #fff; border-radius: 6px; box-shadow: 0 1px 6px rgba(0,0,0,.3); padding: 10px 12px; }
+  #panel h3 { margin: 10px 0 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: #555; }
+  #panel h3:first-child { margin-top: 0; }
+  #panel label { display: flex; gap: 6px; align-items: center; padding: 2px 0; cursor: pointer; }
+  #panel select { width: 100%; }
+  #panel a { font-size: 12px; }
+  .maplibregl-popup-content table { border-collapse: collapse; font-size: 13px; }
+  .maplibregl-popup-content td { padding: 1px 6px 1px 0; }
+  .maplibregl-popup-content td:first-child { color: #666; }
+</style>
+</head>
+<body>
+<div id="harita"></div>
+<div id="panel">
+  <h3>Stil</h3>
+  <select id="stil"></select>
+  <h3>Üst katman</h3>
+  <label><input type="checkbox" id="meteo"> Meteoroloji istasyonları</label>
+  <h3>Vektör katmanlar</h3>
+  <div id="gruplar"></div>
+  <h3>Diğer</h3>
+  <a href="/">Raster katmanlar (Leaflet)</a>
+</div>
+<script>
+// Stiller sunucudan gelir: HGM'nin kendi stil dosyaları, adresleri yerel sunucuya çevrilmiş.
+// Vektör veri tarayıcıda çizildiği için yazılar her zoom düzeyinde keskin kalır.
+const GRUP_ADLARI = {
+  karalar: "Karalar", ulkeler: "Ülkeler", denizler: "Denizler", goller: "Göller", iso_bath: "Deniz derinliği",
+  sounding: "Derinlik noktaları", orman_alan_250k: "Orman", donati_alan: "Donatı alanları",
+  sinir_cizgileri: "Sınır çizgileri", karayolu: "Karayolu", yolorta_yurtdisi: "Yurt dışı yollar",
+  yerlesim: "Yerleşim alanları", noktalar: "Noktalar", onemli_noktalar: "Önemli noktalar",
+  donati_font_point: "Donatı adları", label3: "Yer adları", cad_2021: "Cadde adları",
+  adalar: "Adalar", plate_cizgi: "Levha sınırları", plate_nokta: "Levha noktaları",
+};
+const harita = new maplibregl.Map({
+  container: "harita", center: [35.2, 39.0], zoom: 5.5, minZoom: 2, maxZoom: 19, hash: "konum",
+  attributionControl: { compact: true },
+});
+harita.addControl(new maplibregl.NavigationControl(), "top-right");
+harita.addControl(new maplibregl.ScaleControl({ unit: "metric" }), "bottom-right");
+
+const stilSec = document.getElementById("stil"), meteo = document.getElementById("meteo");
+const kapali = new Set(JSON.parse(localStorage.getItem("hgm_vektor_kapali") || "[]"));
+
+function gruplariKur() {
+  const gruplar = {};
+  for (const l of harita.getStyle().layers) {
+    const g = l["source-layer"] || (l.type === "raster" ? "raster:" + l.source : null);
+    if (g && l.id !== "meteoroloji" && l.id !== "meteoroloji-yazi") (gruplar[g] ||= []).push(l.id);
+  }
+  const kutu = document.getElementById("gruplar");
+  kutu.innerHTML = "";
+  for (const [g, katmanlar] of Object.entries(gruplar)) {
+    const ad = g.startsWith("raster:") ? (g === "raster:hgm" ? "Uydu görüntüsü" : "Yol ve yer adları (raster)") : (GRUP_ADLARI[g] || g);
+    const l = document.createElement("label");
+    l.innerHTML = `<input type="checkbox"> ${ad}`;
+    const kutucuk = l.querySelector("input");
+    kutucuk.checked = !kapali.has(g);
+    const uygula = () => {
+      for (const id of katmanlar) harita.setLayoutProperty(id, "visibility", kutucuk.checked ? "visible" : "none");
+      kutucuk.checked ? kapali.delete(g) : kapali.add(g);
+      localStorage.setItem("hgm_vektor_kapali", JSON.stringify([...kapali]));
+    };
+    kutucuk.onchange = uygula;
+    if (!kutucuk.checked) uygula();
+    kutu.append(l);
+  }
+}
+
+function meteoUygula() {
+  for (const id of ["meteoroloji-yazi", "meteoroloji"]) if (harita.getLayer(id)) harita.removeLayer(id);
+  if (harita.getSource("meteoroloji")) harita.removeSource("meteoroloji");
+  localStorage.setItem("hgm_meteo", meteo.checked ? "1" : "");
+  if (!meteo.checked) return;
+  harita.addSource("meteoroloji", { type: "vector", tiles: [location.origin + "/t/meteoroloji/{z}/{x}/{y}"], minzoom: 5, maxzoom: 14 });
+  harita.addLayer({ id: "meteoroloji", type: "circle", source: "meteoroloji", "source-layer": "meteoroloji", minzoom: 5,
+    paint: { "circle-radius": 5, "circle-color": "#1d6fd1", "circle-stroke-color": "#fff", "circle-stroke-width": 1.5 } });
+  harita.addLayer({ id: "meteoroloji-yazi", type: "symbol", source: "meteoroloji", "source-layer": "meteoroloji", minzoom: 6,
+    layout: { "text-field": ["concat", ["to-string", ["get", "sicaklik"]], "°"], "text-font": ["opensansbold"],
+              "text-size": 13, "text-offset": [1.4, 0], "text-anchor": "left" },
+    paint: { "text-color": "#123", "text-halo-color": "#fff", "text-halo-width": 1.5 } });
+}
+
+const ALANLAR = [["istad", "İstasyon"], ["sicaklik", "Sıcaklık (°C)"], ["aciklama", "Durum"], ["ruzgarhiz", "Rüzgâr hızı"],
+                 ["ruzgaryon", "Rüzgâr yönü"], ["yagis", "Yağış"], ["aktuelbasinc", "Basınç"], ["verizamani", "Veri zamanı"]];
+harita.on("click", "meteoroloji", e => {
+  const p = e.features[0].properties;
+  const satirlar = ALANLAR.filter(([k]) => p[k] !== undefined && p[k] !== "")
+    .map(([k, ad]) => `<tr><td>${ad}</td><td>${String(p[k]).replace(/[<>&]/g, "")}</td></tr>`).join("");
+  new maplibregl.Popup().setLngLat(e.lngLat).setHTML(`<table>${satirlar}</table>`).addTo(harita);
+});
+harita.on("mouseenter", "meteoroloji", () => harita.getCanvas().style.cursor = "pointer");
+harita.on("mouseleave", "meteoroloji", () => harita.getCanvas().style.cursor = "");
+
+function stilYukle(id) {
+  localStorage.setItem("hgm_vektor_stil", id);
+  harita.setStyle(`/stil/${id}.json`, { diff: false });
+  harita.once("style.load", () => { gruplariKur(); meteoUygula(); });
+}
+meteo.checked = localStorage.getItem("hgm_meteo") === "1";
+meteo.onchange = meteoUygula;
+stilSec.onchange = () => stilYukle(stilSec.value);
+
+fetch("/katmanlar.json").then(r => r.json()).then(liste => {
+  for (const s of liste.filter(k => k.tur === "stil")) stilSec.add(new Option(s.ad, s.id));
+  const kayitli = localStorage.getItem("hgm_vektor_stil");
+  if ([...stilSec.options].some(o => o.value === kayitli)) stilSec.value = kayitli;
+  stilYukle(stilSec.value);
+});
+</script>
+</body>
+</html>

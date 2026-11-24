@@ -51,7 +51,8 @@ function karoKatmani(k) {
 
 fetch("/katmanlar.json").then(r => r.json()).then(liste => {
   const altliklar = {}, ustler = {}, adla = {};
-  for (const k of liste) {
+  // Vektör katmanlar ve stiller Leaflet'te çizilemiyor, onlar vektor.html sayfasında
+  for (const k of liste.filter(k => k.tur === "altlik" || k.tur === "ust")) {
     const etiket = k.maxNativeZoom < 19 ? `${k.ad}<small>z≤${k.maxNativeZoom}</small>` : k.ad;
     adla[k.id] = karoKatmani(k);
     (k.tur === "ust" ? ustler : altliklar)[etiket] = adla[k.id];
@@ -72,6 +73,10 @@ fetch("/katmanlar.json").then(r => r.json()).then(liste => {
   harita.on("baselayerchange", e => { localStorage.setItem("hgm_altlik", e.name); sinirla(e.layer); });
 
   L.control.layers(altliklar, ustler, { collapsed: false }).addTo(harita);
+  const baglanti = L.control({ position: "topright" });
+  baglanti.onAdd = () => Object.assign(L.DomUtil.create("div", "leaflet-bar vektor-baglanti"),
+    { innerHTML: '<a href="vektor.html" title="HGM vektör harita (MapLibre)" style="width:auto;padding:0 8px">Vektör harita</a>' });
+  baglanti.addTo(harita);
 });
 </script>
 </body>

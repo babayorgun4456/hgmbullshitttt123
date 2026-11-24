@@ -9,6 +9,7 @@ Sahte HGM, karo adresindeki x değerine göre davranır:
 """
 import collections
 import http.client
+import json
 import http.server
 import os
 import shutil
@@ -25,6 +26,23 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import sunucu  # noqa: E402
 
 PNG = b"\x89PNG\r\n\x1a\n" + b"\x00" * 100
+TEST_ENC = "AbC/d+e="
+SAHTE_STIL = {
+    "version": 8, "glyphs": "https://atlas.harita.gov.tr/style/fonts/{fontstack}/{range}.pbf",
+    "sprite": "https://atlas.harita.gov.tr/style/sprites/sprite",
+    "sources": {
+        "composite": {"type": "vector", "tiles": ["https://atlas1.harita.gov.tr/CPbf/{z}/{x}/{y}.pbf?enc=AbC%2Fd%2Be%3D"]},
+        "atlas_kara_orman": {"type": "raster", "tiles": ["https://atlas.harita.gov.tr/tile/atlas_kara_orman/{z}/{x}/{y}.png"]},
+        "yolorta": {"type": "raster", "tiles": ["https://atlas.harita.gov.tr/webservis/harita/yolorta_varsayilan/{z}/{x}/{y}.png?apikey=x"]},
+    },
+    "layers": [
+        {"id": "background", "type": "background"},
+        {"id": "kara_raster", "type": "raster", "source": "atlas_kara_orman"},
+        {"id": "karalar", "type": "fill", "source": "composite", "source-layer": "karalar", "minzoom": 7},
+        {"id": "corona", "type": "fill", "source": "composite", "source-layer": "corona"},
+        {"id": "yolorta", "type": "raster", "source": "yolorta"},
+    ],
+}
 
 
 class SahteHGM(http.server.BaseHTTPRequestHandler):
@@ -48,6 +66,12 @@ class SahteHGM(http.server.BaseHTTPRequestHandler):
         with self.kilit:
             self.sayac[yol] += 1
             kacinci = self.sayac[yol]
+        if yol.startswith("/style/"):
+            if yol == "/style/corona.json":
+                return self.yanit(200, json.dumps(SAHTE_STIL).encode())
+            if yol == "/style/sprites/sprite.json":
+                return self.yanit(200, b"{}")
+            return self.yanit(404, b"yok")
         parca = yol.split("/")
         z, x = parca[-3], int(parca[-2])
         y = parca[-1].split(".")[0]
@@ -238,6 +262,54 @@ class HttpTestleri(Temel):
     def test_dolu_port_hata_verir(self):
         with self.assertRaises(OSError):
             sunucu.baslat(port=self.s4.server_address[1], ipv6=False)
+
+
+class VektorTestleri(Temel):
+    def setUp(self):
+        super().setUp()
+        self.eski_enc = dict(sunucu.ENC_KATMAN)
+        self.eski_katman = sunucu.KATMANLAR.get("hgm_vektor")
+        sunucu.ENC_KATMAN.clear()
+        sunucu.ENC_KATMAN[TEST_ENC] = "hgm_vektor"
+        sunucu.KATMANLAR["hgm_vektor"] = ("v", "atlas1.harita.gov.tr", "/CPbf/{z}/{x}/{y}.pbf?enc=x", "pbf", 0, 21, "vektor")
+        sunucu._kilitler.setdefault("hgm_vektor", threading.Semaphore(4))
+        sunucu._kovalar.setdefault("hgm_vektor", sunucu.Kova(1000, 1000))
+        sunucu._kapali_bitis.setdefault("hgm_vektor", 0.0)
+
+    def tearDown(self):
+        sunucu.ENC_KATMAN.clear()
+        sunucu.ENC_KATMAN.update(self.eski_enc)
+        if self.eski_katman:
+            sunucu.KATMANLAR["hgm_vektor"] = self.eski_katman
+        else:
+            sunucu.KATMANLAR.pop("hgm_vektor", None)
+        super().tearDown()
+
+    def test_pbf_govde_dogrulamasi(self):
+        self.assertTrue(sunucu.gecerli_govde("pbf", b""))
+        self.assertTrue(sunucu.gecerli_govde("pbf", b"\x1a\x05abcde"))
+        self.assertFalse(sunucu.gecerli_govde("pbf", b"<html>hata</html>"))
+        self.assertFalse(sunucu.gecerli_govde("pbf", b'{"message":"x"}'))
+
+    def test_stil_adresleri_yerele_cevrilir(self):
+        durum, _, govde = self.iste("/stil/hgm_vektor.json")
+        self.assertEqual(durum, 200)
+        stil = json.loads(govde)
+        self.assertEqual(stil["sources"]["composite"]["tiles"], [self.adres + "/t/hgm_vektor/{z}/{x}/{y}"])
+        self.assertEqual(stil["sources"]["yolorta"]["tiles"], [self.adres + "/t/yol_yazi_acik/{z}/{x}/{y}"])
+        self.assertNotIn("atlas_kara_orman", stil["sources"])
+        idler = [l["id"] for l in stil["layers"]]
+        self.assertNotIn("kara_raster", idler)
+        self.assertNotIn("corona", idler)
+        self.assertIn("kara_z7_alti_ulkeler", idler)
+        self.assertTrue(stil["glyphs"].startswith(self.adres + "/hgm-stil/fonts/"))
+        self.assertNotIn("harita.gov.tr", json.dumps(stil), "stilde HGM adresi kalmamali")
+
+    def test_stil_varligi_beyaz_liste(self):
+        self.assertEqual(self.iste("/hgm-stil/sprites/sprite.json")[0], 200)
+        for yol in ("/hgm-stil/corona.json", "/hgm-stil/../sunucu.py", "/hgm-stil/fonts/a/../../x.pbf",
+                    "/stil/yok.json"):
+            self.assertEqual(self.iste(yol)[0], 404, yol)
 
 
 class KovaTesti(unittest.TestCase):

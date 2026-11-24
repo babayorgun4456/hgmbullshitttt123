@@ -17,12 +17,14 @@ Anahtarlar ayar.env dosyasından ya da ortam değişkenlerinden okunur (ayar.env
 """
 import collections
 import contextlib
+import hashlib
 import http.client
 import http.server
 import json
 import os
 import posixpath
 import random
+import re
 import socket
 import socketserver
 import sys
@@ -30,13 +32,15 @@ import threading
 import time
 from datetime import datetime
 from pathlib import Path
-from urllib.parse import parse_qs, unquote, urlsplit
+from urllib.parse import parse_qs, quote, unquote, urlsplit
 
 KOK = Path(__file__).resolve().parent
 ONBELLEK = KOK / "onbellek"
 AYAR_DOSYASI = KOK / "ayar.env"
 GEREKLI_AYARLAR = ("HGM_API_KEY", "HGM_WS_KEY", "HGM_HARITA_KEY")
-SECIMLI_AYARLAR = ("PORT", "HGM_ESZAMANLI", "HGM_HIZ", "HGM_UST_ADRES")
+# Vektör karo "enc" değerleri isteğe bağlı: eksikse o vektör katmanı listeye girmez.
+VEKTOR_AYARLARI = ("HGM_VEKTOR_ENC", "HGM_ETIKET_ENC", "HGM_ETIKET_UYDU_ENC", "HGM_METEO_ENC")
+SECIMLI_AYARLAR = ("PORT", "HGM_ESZAMANLI", "HGM_HIZ", "HGM_UST_ADRES") + VEKTOR_AYARLARI
 
 
 def ayar_oku():
@@ -77,7 +81,24 @@ KATMANLAR = {
     "topografik_raster": ("Topografik (Raster)", "atlas.harita.gov.tr", "/webservis/hgmrasterhrt/topografik/{z}/{x}/{y}.png?apikey=" + WS_KEY,    "png", 1, 13, "altlik"),
     "hgm_harita":        ("HGM Harita",          "atlas.harita.gov.tr", "/webservis/harita/hgm_harita/{z}/{x}/{y}.png?apikey=" + HGM_HARITA_KEY,  "png", 1, 16, "altlik"),
     "yol_yazi":          ("Yol ve yer adları (şeffaf)", "atlas.harita.gov.tr", "/webservis/harita/yolorta_uydu/{z}/{x}/{y}.png?apikey=" + WS_KEY, "png", 6, 19, "ust"),
+    "yol_yazi_acik":     ("Yol ve yer adları, açık zemin (şeffaf)", "atlas.harita.gov.tr", "/webservis/harita/yolorta_varsayilan/{z}/{x}/{y}.png?apikey=" + WS_KEY, "png", 6, 20, "ust"),
 }
+
+# Vektör karolar (Mapbox Vector Tile). HGM sitesinin uydu ve korona stilleri bunları
+# kullanıyor. Referer istemiyorlar ama anahtar istemciye gitmesin ve önbellek olsun diye
+# raster katmanlarla aynı adres biçiminden verilir: /t/<ad>/{z}/{x}/{y}
+# ayar adı: (görünen ad, sunucu, yol şablonu, en düşük z, en yüksek z, katman adı)
+VEKTOR_TANIMLARI = {
+    "HGM_VEKTOR_ENC":      ("HGM vektör: sınır, yol, yerleşim, göl, orman", "atlas1.harita.gov.tr", "/CPbf/{z}/{x}/{y}.pbf?enc=", 0, 21, "hgm_vektor"),
+    "HGM_ETIKET_ENC":      ("HGM yer adları (vektör)", "atlas1.harita.gov.tr", "/CPbf/{z}/{x}/{y}.pbf?enc=", 0, 21, "hgm_etiket"),
+    "HGM_ETIKET_UYDU_ENC": ("HGM yer adları, uydu stili (vektör)", "atlas1.harita.gov.tr", "/CPbf/{z}/{x}/{y}.pbf?enc=", 0, 21, "hgm_etiket_uydu"),
+    "HGM_METEO_ENC":       ("Meteoroloji istasyonları (vektör)", "atlas.harita.gov.tr", "/api/Pbf/{z}/{x}/{y}.pbf?enc=", 5, 14, "meteoroloji"),
+}
+ENC_KATMAN = {}  # HGM stil dosyasındaki enc değeri -> bizim katman adı
+for _ayar, (_gorunen, _host, _yol, _min, _max, _ad) in VEKTOR_TANIMLARI.items():
+    if AYAR.get(_ayar):
+        KATMANLAR[_ad] = (_gorunen, _host, _yol + quote(AYAR[_ayar], safe=""), "pbf", _min, _max, "vektor")
+        ENC_KATMAN[AYAR[_ayar]] = _ad
 
 BASLIK = {
     "Referer": "https://atlas.harita.gov.tr/",
@@ -86,7 +107,7 @@ BASLIK = {
                   "(KHTML, like Gecko) Chrome/130.0 Safari/537.36",
     "Connection": "keep-alive",
 }
-TIPLER = {"png": "image/png", "jpg": "image/jpeg"}
+TIPLER = {"png": "image/png", "jpg": "image/jpeg", "pbf": "application/x-protobuf"}
 
 
 # HGM'nin karo vermediği yerler (ör. Topografik Raster Türkiye dışında 404) için 1x1 şeffaf PNG
@@ -113,6 +134,10 @@ EN_YUKSEK_Z = 22
 
 
 def gecerli_govde(uzanti, govde):
+    if uzanti == "pbf":
+        # Boş vektör karo geçerli (o bölgede veri yok). Dolu karo protobuf "layers"
+        # alanıyla (alan 3, tür 2 = 0x1a) başlar. HTML/JSON hata sayfası bununla başlamaz.
+        return not govde or govde[:1] == b"\x1a"
     return len(govde) >= EN_KUCUK_GOVDE and govde.startswith(IMZALAR[uzanti])
 
 
@@ -387,11 +412,102 @@ def onbellek_mb():
 onbellek_mb.deger, onbellek_mb.zaman = 0.0, 0.0
 
 
+# --- HGM stilleri ----------------------------------------------------------------
+# HGM sitesinin vektör kullanan iki stili, bizim adreslerimize çevrilerek verilir.
+STILLER = {
+    "hgm_vektor": ("HGM Vektör", "corona.json"),
+    "hgm_uydu_vektor": ("HGM Uydu + vektör yazı", "hgm_uydu2.json"),
+}
+STIL_TTL = 86400
+# corona.json içindeki "corona" katmanı salgın dönemi verisi, atlas_kara_orman ise 404 veriyor
+ATILAN_KATMANLAR = {"corona"}
+STIL_VARLIK = re.compile(r"^(fonts/[^/]+/\d+-\d+\.pbf|sprites/sprite(@2x)?\.(json|png))$")
+VARLIK_TIPLERI = {".pbf": "application/x-protobuf", ".json": "application/json", ".png": "image/png"}
+
+
+def _hgm_stil_dosyasi(yol, ttl=None):
+    """atlas.harita.gov.tr/style/<yol> içeriği, diskte saklanır. (durum, gövde)"""
+    uzanti = Path(yol).suffix
+    dosya = ONBELLEK / "_stil" / (hashlib.sha1(yol.encode()).hexdigest() + uzanti)
+    if dosya.exists() and (ttl is None or time.time() - dosya.stat().st_mtime < ttl):
+        return 200, dosya.read_bytes()
+    durum, govde = _cek_dayanikli("atlas.harita.gov.tr", "/style/" + yol)
+    if durum == 200 and govde:
+        dosya.parent.mkdir(parents=True, exist_ok=True)
+        gecici = dosya.with_name(dosya.name + f".{threading.get_ident()}.tmp")
+        gecici.write_bytes(govde)
+        gecici.replace(dosya)
+    elif dosya.exists():  # HGM'ye ulaşılamadıysa eski kopya da iş görür
+        return 200, dosya.read_bytes()
+    return durum, govde
+
+
+def _kaynak_esle(adres):
+    """HGM stilindeki bir karo adresini bizim katman adına çevirir, eşleşme yoksa None."""
+    if "/CPbf/" in adres or "/api/Pbf/" in adres:
+        enc = unquote(adres.split("enc=", 1)[1]) if "enc=" in adres else ""
+        return ENC_KATMAN.get(enc)
+    for parca, ad in (("webservis/ortofoto/", "uydu"), ("yolorta_uydu/", "yol_yazi"),
+                      ("yolorta_varsayilan/", "yol_yazi_acik"), ("hgm_harita/", "hgm_harita")):
+        if parca in adres:
+            return ad
+    return None
+
+
+def _dusuk_zoom_kara_ekle(stil):
+    """HGM vektör karolarında z7 altında "karalar" katmanı yok, yalnız "ulkeler" ve "adalar" var.
+    HGM stilinde o düzeylerde karayı ölü atlas_kara_orman rasterı boyuyordu. Onun yerine
+    ülke ve ada çokgenleri, HGM'nin z7'deki kara rengiyle boyanır."""
+    kara = next((l for l in stil["layers"] if l.get("source-layer") == "karalar" and l["type"] == "fill"), None)
+    if kara is None:
+        return
+    renk = "rgba(255, 253, 248, 1)"
+    sira = next((i for i, l in enumerate(stil["layers"]) if l["type"] != "background"), 0)
+    for kaynak_katman in ("ulkeler", "adalar"):
+        stil["layers"].insert(sira, {
+            "id": f"kara_z7_alti_{kaynak_katman}", "type": "fill", "source": kara["source"],
+            "source-layer": kaynak_katman, "maxzoom": kara.get("minzoom", 7),
+            "paint": {"fill-color": renk, "fill-antialias": False},
+        })
+
+
+def stil_uret(ad, koken):
+    """HGM stilini indirir, kaynakları /t/ adreslerine, yazı tipi ve simgeleri /hgm-stil/'e çevirir."""
+    gorunen, dosya_adi = STILLER[ad]
+    durum, govde = _hgm_stil_dosyasi(dosya_adi, ttl=STIL_TTL)
+    if durum != 200:
+        return None
+    stil = json.loads(govde.decode("utf-8", "replace"))
+    olu = set()
+    for kaynak_adi, kaynak in list(stil.get("sources", {}).items()):
+        hedef = _kaynak_esle((kaynak.get("tiles") or [""])[0])
+        if hedef not in KATMANLAR:
+            olu.add(kaynak_adi)
+            del stil["sources"][kaynak_adi]
+            continue
+        k = KATMANLAR[hedef]
+        kaynak.pop("url", None)
+        kaynak["tiles"] = [f"{koken}/t/{hedef}/{{z}}/{{x}}/{{y}}"]
+        kaynak["minzoom"], kaynak["maxzoom"] = k[4], k[5]
+        kaynak["attribution"] = "© Harita Genel Müdürlüğü"
+    stil["layers"] = [l for l in stil.get("layers", [])
+                      if l.get("source") not in olu and l.get("source-layer") not in ATILAN_KATMANLAR]
+    _dusuk_zoom_kara_ekle(stil)
+    stil["glyphs"] = f"{koken}/hgm-stil/fonts/{{fontstack}}/{{range}}.pbf"
+    stil["sprite"] = f"{koken}/hgm-stil/sprites/sprite"
+    stil["name"] = gorunen
+    stil["id"] = ad
+    return stil
+
+
 def katman_listesi(adres):
     return [
-        {"id": ad, "ad": k[0], "tur": k[6], "minZoom": k[4], "maxNativeZoom": k[5],
+        {"id": ad, "ad": k[0], "tur": k[6], "format": k[3], "minZoom": k[4], "maxNativeZoom": k[5],
          "url": f"http://{adres}/t/{ad}/{{z}}/{{x}}/{{y}}"}
         for ad, k in KATMANLAR.items()
+    ] + [
+        {"id": ad, "ad": gorunen, "tur": "stil", "url": f"http://{adres}/stil/{ad}.json"}
+        for ad, (gorunen, _) in STILLER.items()
     ]
 
 
@@ -425,9 +541,9 @@ class Isleyici(http.server.SimpleHTTPRequestHandler):
         """Proje klasöründe anahtar dosyası, log ve önbellek de duruyor. Yalnız
         sayfanın kendisi ve Leaflet dosyaları servis edilir."""
         norm = posixpath.normpath(unquote(yol))
-        if norm in ("/", "/index.html"):
+        if norm in ("/", "/index.html", "/vektor.html"):
             return True
-        return norm.startswith("/leaflet/") and (KOK / norm.lstrip("/")).is_file()
+        return norm.startswith(("/leaflet/", "/maplibre/")) and (KOK / norm.lstrip("/")).is_file()
 
     def do_OPTIONS(self):
         self.send_response(204)
@@ -454,11 +570,37 @@ class Isleyici(http.server.SimpleHTTPRequestHandler):
             return self.gonder_json(ISTATISTIK.ozet())
         if yol.startswith("/t/"):
             return self.karo_yanitla(yol, adres.query)
+        if yol.startswith("/stil/") and yol.endswith(".json"):
+            ad = yol[len("/stil/"):-len(".json")]
+            if ad not in STILLER:
+                return self.gonder(404, "text/plain", b"bilinmeyen stil")
+            try:
+                stil = stil_uret(ad, f"http://{self.headers.get('Host', f'localhost:{PORT}')}")
+            except Exception as e:
+                log("HATA", "stil", f"{ad}: {type(e).__name__}")
+                stil = None
+            if stil is None:
+                return self.gonder(502, "text/plain", b"HGM stil dosyasi alinamadi")
+            return self.gonder_json(stil)
+        if yol.startswith("/hgm-stil/"):
+            return self.stil_varligi(yol[len("/hgm-stil/"):])
         if not self.statik_izinli(yol):
             return self.gonder(404, "text/plain", b"bulunamadi")
         if self.command == "HEAD":
             return super().do_HEAD()
         return super().do_GET()
+
+    def stil_varligi(self, yol):
+        """HGM'nin yazı tipi ve simge dosyaları. Yalnız bu iki tür, başka bir dosya değil."""
+        if not STIL_VARLIK.match(yol):
+            return self.gonder(404, "text/plain", b"bulunamadi")
+        try:
+            durum, govde = _hgm_stil_dosyasi(yol)
+        except Exception as e:
+            durum, govde = 502, type(e).__name__.encode()
+        if durum != 200:
+            return self.gonder(502 if durum != 404 else 404, "text/plain", f"HGM {durum}".encode())
+        return self.gonder(200, VARLIK_TIPLERI[Path(yol).suffix], govde, onbellek=True)
 
     def karo_yanitla(self, yol, sorgu):
         parca = yol[3:].split("/")
@@ -486,7 +628,9 @@ class Isleyici(http.server.SimpleHTTPRequestHandler):
             log("UYARI", "yavas", f"{ad} {z}/{x}/{y} durum={durum} {sure:.1f} sn")
         if durum == 200:
             return self.gonder(200, TIPLER[KATMANLAR[ad][3]], govde, onbellek=True)
-        if durum == 204:  # karo yok: şeffaf boş karo, hata değil
+        if durum == 204:  # karo yok: boş karo, hata değil
+            if KATMANLAR[ad][3] == "pbf":
+                return self.gonder(200, TIPLER["pbf"], b"", onbellek=True)
             return self.gonder(200, "image/png", BOS_PNG, onbellek=True)
         if durum == 503:
             kalan = max(1, int(kapali_kalan(ad) + 0.999))

@@ -12,7 +12,8 @@ cd "C:\Users\user\Desktop\hgm-harita"
 python sunucu.py
 ```
 
-Örnek harita: http://localhost:8833
+Raster harita (Leaflet): http://localhost:8833
+Vektör harita (MapLibre): http://localhost:8833/vektor.html
 Katman listesi (JSON): http://localhost:8833/katmanlar.json
 
 Yalnız standart Python kütüphanesi kullanılır, kurulum gerekmez.
@@ -37,6 +38,33 @@ http://localhost:8833/t/<katman>/{z}/{x}/{y}
 | siyasi_raster | Siyasi (Raster) | 9 |
 | topografik_raster | Topografik (Raster) | 13 (yalnız Türkiye) |
 | hgm_harita | HGM Harita | 16 |
+| yol_yazi_acik | Yol ve yer adları, açık zemin için, şeffaf | 20 (z6'dan başlar) |
+
+Vektör katmanlar (Mapbox Vector Tile, `application/x-protobuf`). Aynı `/t/` adres biçimi:
+
+| katman | içerik | zoom |
+|---|---|---|
+| hgm_vektor | karalar, ülkeler, adalar, denizler, göller, deniz derinliği, orman, sınır çizgileri, karayolu, yurt dışı yollar, yerleşim, noktalar, donatı alanları/adları, levha sınırları | 0-21 |
+| hgm_etiket | yer adları (`label3`) ve cadde adları (`cad_2021`) | 0-21 |
+| hgm_etiket_uydu | hgm_etiket ile aynı katmanlar, HGM uydu stilinin kullandığı sürüm | 0-21 |
+| meteoroloji | meteoroloji istasyonları: istasyon adı, sıcaklık, durum, rüzgâr, yağış, basınç, veri zamanı | 5-14 |
+
+Vektör katmanların anahtarları (`HGM_VEKTOR_ENC`, `HGM_ETIKET_ENC`, `HGM_ETIKET_UYDU_ENC`, `HGM_METEO_ENC`)
+isteğe bağlıdır. Eksik olanın katmanı listeye girmez.
+
+HGM'nin kendi stilleri, bütün adresleri bu sunucuya çevrilmiş olarak:
+
+| adres | içerik |
+|---|---|
+| `/stil/hgm_vektor.json` | HGM Vektör (HGM sitesindeki corona.json, ölü kaynakları çıkarılmış, z7 altı kara rengi eklenmiş) |
+| `/stil/hgm_uydu_vektor.json` | HGM Uydu + vektör yer adları (hgm_uydu2.json) |
+
+Stillerin kullandığı yazı tipleri ve simgeler `/hgm-stil/fonts/...` ve `/hgm-stil/sprites/...` adresinden verilir.
+
+MapLibre ile bütün HGM vektör haritası tek satır:
+```js
+new maplibregl.Map({ container: "harita", style: "http://localhost:8833/stil/hgm_vektor.json" });
+```
 
 En yüksek zoom'un üstünde karo istemeyin, altyapının büyütme ayarını kullanın.
 
@@ -95,7 +123,8 @@ Durum uçları:
   Ölçüm (24.11.2026, 48 soğuk karo): 2 eşzamanlı + 8/sn ile 4,3 sn, 4 ile 2,7 sn, 12 ile 1,2 sn. Hiç 403 olmadı.
 - Aynı karoya aynı anda gelen istekler HGM'ye tek istek olarak gider.
 - Sunucu yalnız `127.0.0.1` ve `::1` adreslerini dinler, ağdaki başka makinelere açık değildir.
-- HTTP üzerinden yalnız `/`, `/index.html`, `/leaflet/*`, `/katmanlar.json` ve `/t/*` servis edilir.
+- HTTP üzerinden yalnız `/`, `/index.html`, `/vektor.html`, `/leaflet/*`, `/maplibre/*`, `/katmanlar.json`,
+  `/t/*`, `/stil/*`, `/hgm-stil/fonts|sprites/*`, `/saglik` ve `/istatistik` servis edilir.
   Proje klasöründeki diğer dosyalar (anahtarlar, log, önbellek) 404 döner.
 - Aynı port ikinci kez açılamaz, ikinci `python sunucu.py` "Port 8833 zaten kullanımda" deyip çıkar.
 
