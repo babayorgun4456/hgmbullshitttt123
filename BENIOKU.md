@@ -65,11 +65,16 @@ QGIS: XYZ Tiles > Yeni bağlantı > aynı adres.
 | 200, 1x1 şeffaf PNG | HGM'de bu karo yok (ör. Topografik Raster Türkiye dışı). 30 gün HGM'ye tekrar sorulmaz |
 | 400 | z/x/y sayı değil ya da aralık dışında (0 ≤ z ≤ 22, 0 ≤ x, y < 2^z) |
 | 404 | Bilinmeyen katman ya da izinli olmayan dosya |
-| 502 | HGM'ye ulaşılamadı ya da HGM bozuk karo döndü (önbelleğe yazılmaz) |
-| 503 | HGM bu katmanı 403 ile kapattı, sunucu 30 sn o katmana gitmiyor |
+| 502 | HGM'ye ulaşılamadı, HGM hata verdi (yeniden denemelerden sonra) ya da bozuk karo döndü (önbelleğe yazılmaz) |
+| 503 + `Retry-After` | HGM bu katmanı art arda 3 kez 403 ile reddetti, sunucu 30 sn o katmana gitmiyor |
 
 `?yenile=1` eklenirse önbellek ve "karo yok" kaydı atlanır, karo HGM'den yeniden alınır.
-`HEAD` istekleri `GET` ile aynı durum kodunu ve başlıkları gövdesiz döner.
+`HEAD` istekleri `GET` ile aynı durum kodunu ve başlıkları gövdesiz döner (karo önbellekte yoksa HGM'den alınır).
+`OPTIONS` 204 ve CORS başlıkları döner.
+
+Durum uçları:
+- `GET /saglik`: ayakta mı, katman sayısı, önbellek boyutu, kapalı katmanlar
+- `GET /istatistik`: önbellek isabet/ıska, HGM hata ve yeniden deneme sayıları, HGM ve yanıt gecikmesi (p50/p95)
 
 ## Neden vekil
 
@@ -78,13 +83,26 @@ QGIS: XYZ Tiles > Yeni bağlantı > aynı adres.
   `atlasapitest.harita.gov.tr/Layers/...` (Temel, Siyasi, Gece, Topografik) Referer istemiyor, CORS açık.
 - Bütün katmanlar tek biçimli bir adresten verilir, anahtarlar istemciye gitmez.
 - Karolar `onbellek/<katman>/z/x/y` altına yazılır. Bakılan yer bir daha HGM'den istenmez.
-- HGM zaman zaman bir katmanı birkaç dakika 403 ile kapatıyor. `atlasapitest` katmanlarında
-  403 gelince sunucu o katmana 30 sn hiç gitmez (`BEKLEME_403`).
+- HGM zaman zaman bir katmanı birkaç dakika 403 ile kapatıyor. Herhangi bir katmanda art arda
+  3 kez 403 gelince sunucu o katmana 30 sn hiç gitmez (`ESIK_403`, `BEKLEME_403`). 200 gelince sayaç sıfırlanır.
+- 429 ve 5xx yanıtlarında 3 kez daha denenir (0,5 / 1 / 2 sn, `Retry-After` varsa ona uyulur, en çok 5 sn).
+  Yönlendirmeler en çok 3 kez izlenir.
 
 ## Sınırlar (koddaki değerler)
 
-- HGM'ye katman başına en çok 12 eşzamanlı istek (`ESZAMANLI = 12`). Ayrıca hız sınırı yok.
-  Ölçüm (24.11.2026): 16 eşzamanlı istekle 300 karo 5 sn içinde geldi, hiç 403 olmadı.
+- HGM'ye katman başına en çok 12 eşzamanlı istek (`HGM_ESZAMANLI`) ve saniyede 40 karo (`HGM_HIZ`,
+  token bucket, anlık 80). İkisi de `ayar.env` ile değiştirilebilir.
+  Ölçüm (24.11.2026, 48 soğuk karo): 2 eşzamanlı + 8/sn ile 4,3 sn, 4 ile 2,7 sn, 12 ile 1,2 sn. Hiç 403 olmadı.
+- Aynı karoya aynı anda gelen istekler HGM'ye tek istek olarak gider.
 - Sunucu yalnız `127.0.0.1` ve `::1` adreslerini dinler, ağdaki başka makinelere açık değildir.
 - HTTP üzerinden yalnız `/`, `/index.html`, `/leaflet/*`, `/katmanlar.json` ve `/t/*` servis edilir.
   Proje klasöründeki diğer dosyalar (anahtarlar, log, önbellek) 404 döner.
+- Aynı port ikinci kez açılamaz, ikinci `python sunucu.py` "Port 8833 zaten kullanımda" deyip çıkar.
+
+## Testler
+
+```
+python -m pytest -q
+```
+
+Testler yerel sahte bir HGM sunucusu kullanır, gerçek HGM'ye hiç istek atmaz.
