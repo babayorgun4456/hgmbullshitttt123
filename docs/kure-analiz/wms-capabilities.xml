@@ -1,0 +1,1003 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<WMS_Capabilities version="1.3.0" xmlns="http://www.opengis.net/wms" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wms http://schemas.opengis.net/wms/1.3.0/capabilities_1_3_0.xsd" >
+  <Service>
+    <Name>WMS</Name>
+    <Title>Harita Genel Komutanligi WMS Hizmeti</Title>
+    <Abstract>Harita Genel Komutanligi WMS Hizmeti</Abstract>
+    <KeywordList>
+      <Keyword>OGC</Keyword>
+    </KeywordList>
+<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www.citysurf.com.tr" />
+    <ContactInformation>
+    </ContactInformation>
+    <Fees>none</Fees>
+    <AccessConstraints>none</AccessConstraints>
+  </Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <Format>text/xml</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://kure.harita.gov.tr/cshgksisgel/csogc.dll/wms?" />
+            </Get>
+          </HTTP>
+        </DCPType>
+      </GetCapabilities>
+      <GetMap>
+        <Format>image/jpeg</Format>
+        <Format>image/bmp</Format>
+        <Format>image/gif</Format>
+        <Format>image/png</Format>
+        <Format>image/png8</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://kure.harita.gov.tr/cshgksisgel/csogc.dll/wms?" />
+            </Get>
+          </HTTP>
+        </DCPType>
+      </GetMap>
+      <GetFeatureInfo>
+        <Format>text/html</Format>
+        <Format>text/plain</Format>
+        <Format>text/xml</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://kure.harita.gov.tr/cshgksisgel/csogc.dll/wms?" />
+            </Get>
+          </HTTP>
+        </DCPType>
+      </GetFeatureInfo>
+    </Request>
+    <Exception>
+      <Format>XML</Format>
+    </Exception>
+    <VendorSpecificCapabilities>
+      <LastUpdate></LastUpdate>
+    </VendorSpecificCapabilities>
+<Layer queryable="0" opaque="0" noSubsets="0">
+  <Title>Harita Genel Komutanligi WMS Hizmeti</Title>
+  <CRS>CRS:84</CRS>
+  <CRS>EPSG:4326</CRS>
+<EX_GeographicBoundingBox>
+  <westBoundLongitude>-180.000000000000</westBoundLongitude>
+  <eastBoundLongitude>180.000000000000</eastBoundLongitude>
+  <southBoundLatitude>-90.000000000000</southBoundLatitude>
+  <northBoundLatitude>90.000000000000</northBoundLatitude>
+</EX_GeographicBoundingBox>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <Layer queryable="0" opaque="0">
+    <Name>raster</Name>
+    <Title>raster</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>Dunya</Name>
+    <Title>Dunya</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>Genel_Uydu_Goruntusu</Name>
+    <Title>Genel_Uydu_Goruntusu</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_1M_hava_Raster_Harita</Name>
+    <Title>HGK_1M_hava_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_250K_hava_Raster_Harita</Name>
+    <Title>HGK_250K_hava_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_250K_kara_Raster_Harita</Name>
+    <Title>HGK_250K_kara_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_500K_hava_Raster_Harita</Name>
+    <Title>HGK_500K_hava_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_500K_kara_Raster_Harita</Name>
+    <Title>HGK_500K_kara_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Afganistan_Fiziki_Raster_Harita</Name>
+    <Title>HGK_Afganistan_Fiziki_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Avrupa_Afrika_Fiziki_Raster_Harita</Name>
+    <Title>HGK_Avrupa_Afrika_Fiziki_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Avrupa_Fiziki_Raster_Harita</Name>
+    <Title>HGK_Avrupa_Fiziki_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Balkanlar_Fiziki_Raster_Harita</Name>
+    <Title>HGK_Balkanlar_Fiziki_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Bosna_Kosova_Fiziki_Raster_Harita</Name>
+    <Title>HGK_Bosna_Kosova_Fiziki_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Dunya_Fiziki_Raster_Harita</Name>
+    <Title>HGK_Dunya_Fiziki_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Irak_Fiziki_Raster_Harita</Name>
+    <Title>HGK_Irak_Fiziki_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Iran_Fiziki_Raster_Harita</Name>
+    <Title>HGK_Iran_Fiziki_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Kafkaslar_Fiziki_Raster_Harita</Name>
+    <Title>HGK_Kafkaslar_Fiziki_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Kibris_Fiziki_Raster_Harita</Name>
+    <Title>HGK_Kibris_Fiziki_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Lubnan_Suriye_Fiziki_Raster_Harita</Name>
+    <Title>HGK_Lubnan_Suriye_Fiziki_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Ortadogu_Fiziki_Raster_Harita</Name>
+    <Title>HGK_Ortadogu_Fiziki_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Suriye_Irak_Fiziki_Raster_Harita</Name>
+    <Title>HGK_Suriye_Irak_Fiziki_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Turkiye_Cevresi_Fiziki_Raster_Harita</Name>
+    <Title>HGK_Turkiye_Cevresi_Fiziki_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Turkiye_Fiziki_1000K_Raster_Harita</Name>
+    <Title>HGK_Turkiye_Fiziki_1000K_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Afganistan_Siyasi_Raster_Harita</Name>
+    <Title>HGK_Afganistan_Siyasi_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Afrika_Siyasi_Raster_Harita</Name>
+    <Title>HGK_Afrika_Siyasi_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Avrupa_Afrika_Siyasi_Raster_Harita</Name>
+    <Title>HGK_Avrupa_Afrika_Siyasi_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Avrupa_Siyasi_Raster_Harita</Name>
+    <Title>HGK_Avrupa_Siyasi_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Balkanlar_Siyasi_Raster_Harita</Name>
+    <Title>HGK_Balkanlar_Siyasi_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Bosna_Kosova_Siyasi_Raster_Harita</Name>
+    <Title>HGK_Bosna_Kosova_Siyasi_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Dunya_Siyasi_Raster_Harita</Name>
+    <Title>HGK_Dunya_Siyasi_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Irak_Siyasi_Raster_Harita</Name>
+    <Title>HGK_Irak_Siyasi_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Iran_Siyasi_Raster_Harita</Name>
+    <Title>HGK_Iran_Siyasi_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Kafkaslar_Siyasi_Raster_Harita</Name>
+    <Title>HGK_Kafkaslar_Siyasi_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Kibris_Siyasi_Raster_Harita</Name>
+    <Title>HGK_Kibris_Siyasi_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Lubnan_Suriye_Siyasi_Raster_Harita</Name>
+    <Title>HGK_Lubnan_Suriye_Siyasi_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Ortadogu_Siyasi_Raster_Harita</Name>
+    <Title>HGK_Ortadogu_Siyasi_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Suriye_Irak_Siyasi_Raster_Harita</Name>
+    <Title>HGK_Suriye_Irak_Siyasi_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Turkiye_Cevresi_Siyasi_Raster_Harita</Name>
+    <Title>HGK_Turkiye_Cevresi_Siyasi_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HGK_Turkiye_Siyasi_1000K_Raster_Harita</Name>
+    <Title>HGK_Turkiye_Siyasi_1000K_Raster_Harita</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>sinir_uhzm</Name>
+    <Title>sinir_uhzm</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>ADANA</Name>
+    <Title>ADANA</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>ADAPAZARI</Name>
+    <Title>ADAPAZARI</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>AFYON</Name>
+    <Title>AFYON</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>AGRI</Name>
+    <Title>AGRI</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>AKCAABAT</Name>
+    <Title>AKCAABAT</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>AKSARAY</Name>
+    <Title>AKSARAY</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>ALANYA</Name>
+    <Title>ALANYA</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>ANKARA</Name>
+    <Title>ANKARA</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>ANTAKYA</Name>
+    <Title>ANTAKYA</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>ANTALYA</Name>
+    <Title>ANTALYA</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>ARDAHAN</Name>
+    <Title>ARDAHAN</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>ARTVIN</Name>
+    <Title>ARTVIN</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>AYDIN</Name>
+    <Title>AYDIN</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>AYVALIK</Name>
+    <Title>AYVALIK</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>BALIKESIR</Name>
+    <Title>BALIKESIR</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>BANDIRMA</Name>
+    <Title>BANDIRMA</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>BASKALE</Name>
+    <Title>BASKALE</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>BOLU</Name>
+    <Title>BOLU</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>BURSA</Name>
+    <Title>BURSA</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>CANAKKALE</Name>
+    <Title>CANAKKALE</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>CANKIRI</Name>
+    <Title>CANKIRI</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>CEYLANPINAR</Name>
+    <Title>CEYLANPINAR</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>CIZRE</Name>
+    <Title>CIZRE</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>CORUM</Name>
+    <Title>CORUM</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>DENIZLI</Name>
+    <Title>DENIZLI</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>DIVRIGI</Name>
+    <Title>DIVRIGI</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>DIYARBAKIR</Name>
+    <Title>DIYARBAKIR</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>DOGUBEYAZIT</Name>
+    <Title>DOGUBEYAZIT</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>EDIRNE</Name>
+    <Title>EDIRNE</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>ELAZIG</Name>
+    <Title>ELAZIG</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>ELBISTAN</Name>
+    <Title>ELBISTAN</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>EREGLI</Name>
+    <Title>EREGLI</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>ERZINCAN</Name>
+    <Title>ERZINCAN</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>ERZURUM</Name>
+    <Title>ERZURUM</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>ESKISEHIR</Name>
+    <Title>ESKISEHIR</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>FETHIYE</Name>
+    <Title>FETHIYE</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>GAZIANTEP</Name>
+    <Title>GAZIANTEP</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>GIRESUN</Name>
+    <Title>GIRESUN</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>HAKKARI</Name>
+    <Title>HAKKARI</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>ILGIN</Name>
+    <Title>ILGIN</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>ISPARTA</Name>
+    <Title>ISPARTA</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>ISTANBUL</Name>
+    <Title>ISTANBUL</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>IZMIR</Name>
+    <Title>IZMIR</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>KARAMAN</Name>
+    <Title>KARAMAN</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>KARS</Name>
+    <Title>KARS</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>KASTAMONU</Name>
+    <Title>KASTAMONU</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>KAYSERI</Name>
+    <Title>KAYSERI</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>KIRKLARELI</Name>
+    <Title>KIRKLARELI</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>KIRSEHIR</Name>
+    <Title>KIRSEHIR</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>KONYA</Name>
+    <Title>KONYA</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>KUTAHYA</Name>
+    <Title>KUTAHYA</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>MALATYA</Name>
+    <Title>MALATYA</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>MARDIN</Name>
+    <Title>MARDIN</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>MARMARIS</Name>
+    <Title>MARMARIS</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>MERSIN</Name>
+    <Title>MERSIN</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>MUS</Name>
+    <Title>MUS</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>PERSEMBE</Name>
+    <Title>PERSEMBE</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>SAMSUN</Name>
+    <Title>SAMSUN</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>SANLIURFA</Name>
+    <Title>SANLIURFA</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>SILIFKE</Name>
+    <Title>SILIFKE</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>SINOP</Name>
+    <Title>SINOP</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>SIVAS</Name>
+    <Title>SIVAS</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>SURUC</Name>
+    <Title>SURUC</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>TOKAT</Name>
+    <Title>TOKAT</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>TORTUM</Name>
+    <Title>TORTUM</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>TRABZON</Name>
+    <Title>TRABZON</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>URLA</Name>
+    <Title>URLA</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>USAK</Name>
+    <Title>USAK</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>VAN</Name>
+    <Title>VAN</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>YOZGAT</Name>
+    <Title>YOZGAT</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>ZONGULDAK</Name>
+    <Title>ZONGULDAK</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>gokturk</Name>
+    <Title>gokturk</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>Deprem_Gokturk</Name>
+    <Title>Deprem_Gokturk</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>Deprem_Hava</Name>
+    <Title>Deprem_Hava</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>Deprem_Iha</Name>
+    <Title>Deprem_Iha</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+  <Layer queryable="0" opaque="0">
+    <Name>Deprem_Uydu</Name>
+    <Title>Deprem_Uydu</Title>
+  <CRS>CRS:84</CRS>
+  <BoundingBox CRS="CRS:84" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  <CRS>EPSG:4326</CRS>
+  <BoundingBox CRS="EPSG:4326" minx="-180.00000000000000" miny="-90.00000000000001" maxx="180.00000000000003" maxy="90.00000000000000"  />
+  </Layer>
+</Layer>
+  </Capability>
+</WMS_Capabilities>
