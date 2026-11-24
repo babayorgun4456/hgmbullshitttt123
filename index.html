@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>HGM katmanları (Leaflet)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="leaflet/leaflet.css">
+<script src="leaflet/leaflet.js"></script>
+<style>
+  html, body, #harita { margin: 0; height: 100%; }
+  body { font: 14px/1.4 system-ui, "Segoe UI", sans-serif; }
+  .leaflet-control-layers-expanded { font-size: 14px; line-height: 1.7; }
+  .leaflet-control-layers label small { color: #888; margin-left: 4px; }
+  #durum { position: absolute; left: 10px; bottom: 22px; z-index: 1000; background: #fff;
+           padding: 4px 8px; border-radius: 4px; font-size: 12px; color: #a33; display: none; }
+</style>
+</head>
+<body>
+<div id="harita"></div>
+<div id="durum"></div>
+<script>
+// Katmanlar sunucu.py'den gelir. Her biri düz bir XYZ adresi: /t/<katman>/{z}/{x}/{y}
+const harita = L.map("harita", { center: [39.0, 35.2], zoom: 6, minZoom: 3, maxZoom: 19 });
+L.control.scale({ imperial: false }).addTo(harita);
+
+const durum = document.getElementById("durum");
+let hataSayisi = 0, hataZamani;
+function hataGoster(ad) {
+  hataSayisi++;
+  durum.textContent = `${ad}: ${hataSayisi} karo HGM'den alınamadı (sunucu konsoluna bakın)`;
+  durum.style.display = "block";
+  clearTimeout(hataZamani);
+  hataZamani = setTimeout(() => { durum.style.display = "none"; hataSayisi = 0; }, 5000);
+}
+
+// Tarayıcı tek adrese en çok 6 bağlantı açar. Karolar iki adres üzerinden istenince 12 olur.
+const SUNUCU = `:${location.port || 8833}`;
+function karoKatmani(k) {
+  const yol = new URL(k.url).pathname.replaceAll("%7B", "{").replaceAll("%7D", "}");
+  const katman = L.tileLayer(`http://{s}${SUNUCU}${yol}`, {
+    subdomains: ["localhost", "127.0.0.1"],
+    minZoom: 3, maxZoom: 19,
+    minNativeZoom: k.minZoom, maxNativeZoom: k.maxNativeZoom,  // üstünde karolar büyütülür
+    attribution: "© Harita Genel Müdürlüğü",
+    updateWhenZooming: false,  // zoom bitince iste, ara düzeyleri boşuna indirme
+    keepBuffer: 2,
+  });
+  katman.on("tileerror", () => hataGoster(k.ad));
+  return katman;
+}
+
+fetch("/katmanlar.json").then(r => r.json()).then(liste => {
+  const altliklar = {}, ustler = {}, adla = {};
+  for (const k of liste) {
+    const etiket = k.maxNativeZoom < 19 ? `${k.ad}<small>z≤${k.maxNativeZoom}</small>` : k.ad;
+    adla[k.id] = karoKatmani(k);
+    (k.tur === "ust" ? ustler : altliklar)[etiket] = adla[k.id];
+  }
+  // Uydu + yer adları: HGM sitesindeki "Uydu" görünümü
+  const yazi = liste.find(k => k.id === "yol_yazi");
+  altliklar["Uydu + yer adları"] = L.layerGroup([karoKatmani(liste.find(k => k.id === "uydu")), karoKatmani(yazi)]);
+
+  // HGM'nin karo vermediği düzeyde en çok 2 kademe büyütme, sonrası okunmaz hale gelir
+  const enYuksek = katman => Math.min(19, (katman.options?.maxNativeZoom ?? 19) + 2);
+  function sinirla(katman) {
+    harita.setMaxZoom(enYuksek(katman));
+    if (harita.getZoom() > harita.getMaxZoom()) harita.setZoom(harita.getMaxZoom());
+  }
+  const secili = localStorage.getItem("hgm_altlik");
+  const ilk = altliklar[secili] || Object.values(altliklar)[0];
+  ilk.addTo(harita); sinirla(ilk);
+  harita.on("baselayerchange", e => { localStorage.setItem("hgm_altlik", e.name); sinirla(e.layer); });
+
+  L.control.layers(altliklar, ustler, { collapsed: false }).addTo(harita);
+});
+</script>
+</body>
+</html>

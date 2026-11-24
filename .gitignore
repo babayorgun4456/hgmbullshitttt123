@@ -1,0 +1,7 @@
+onbellek/
+*.log
+ayar.env
+__pycache__/
+.pytest_cache/
+# REA kayıtları HGM anahtarlarını içeriyor, dosyalar yerinde kalır ama git'e girmez
+rea-kanit/
